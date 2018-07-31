@@ -1,0 +1,20 @@
+<div class="spinner-container" *ngIf="dataSource.getIsLoading()">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-table #table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="supplier">
+    <mat-header-cell *matHeaderCellDef>Наименование поставщика</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.Supplier}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lot">
+    <mat-header-cell *matHeaderCellDef>Номер лота</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.Lot}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"></mat-paginator>

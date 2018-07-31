@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Авторизация</h2>
+
+  <mat-form-field>
+    <input matInput placeholder="Логин" [formControl]="Login" required>
+    <mat-error *ngIf="Login.invalid">Ввведите логин</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput="password" placeholder="Пароль" [formControl]="Password" required>
+    <mat-error *ngIf="Password.invalid">Введите пароль</mat-error>
+  </mat-form-field>
+  <button type="button" mat-button (click)="onSubmit()">Войти</button>

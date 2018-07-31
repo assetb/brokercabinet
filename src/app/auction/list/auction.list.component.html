@@ -1,0 +1,99 @@
+<div>
+  <div class="alta-form-container">
+    <mat-form-field>
+      <input matInput placeholder="Поиск" [(ngModel)]="form.Filter" (keyup)="searchKeyUp()"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [max]="form.EndDate" [matDatepicker]="pickerDate1" placeholder="Фильтровать по дате"
+             [value]="form.StartDate" (dateChange)="onDateChange('StartDate', $event)">
+      <mat-datepicker-toggle matSuffix [for]="pickerDate1"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate1></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [min]="form.StartDate" [matDatepicker]="pickerDate2" placeholder="Фильтровать по дате"
+             [value]="form.EndDate" (dateChange)="onDateChange('EndDate', $event)">
+      <mat-datepicker-toggle matSuffix [for]="pickerDate2"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate2></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Статус" [(value)]="form.StatusId" (change)="search()">
+        <mat-option>Не указанно</mat-option>
+        <mat-option *ngFor="let status of statuses | async" [value]="status.Id"> {{status.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Брокер" [(value)]="form.BrokerId" (change)="search()">
+        <mat-option>Не указанно</mat-option>
+        <mat-option *ngFor="let broker of brokers | async" [value]="broker.Id"> {{broker.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Трейдер" [(value)]="form.TraderId" (change)="search()">
+        <mat-option>Не указанно</mat-option>
+        <mat-option *ngFor="let trader of traders | async" [value]="trader.Id"> {{trader.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Заказчик" [(value)]="form.CustomerId" (change)="search()">
+        <mat-option>Не указанно</mat-option>
+        <mat-option *ngFor="let customer of customers | async" [value]="customer.Id"> {{customer.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Товарная площадка(Биржа)" [(value)]="form.SiteId" (change)="search()">
+        <mat-option>Не указанно</mat-option>
+        <mat-option *ngFor="let site of sites | async" [value]="site.Id">{{site.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <div class="spinner-container" *ngIf="dataSource.loading | async">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="number">
+      <mat-header-cell *matHeaderCellDef>Номер</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.Number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef>Дата</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.Date | date: 'short'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef>Статус</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.Status}}</mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="broker">
+      <mat-header-cell *matHeaderCellDef>Брокер</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.Broker}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="trader">
+      <mat-header-cell *matHeaderCellDef>Трейдер</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.Trader}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="customer">
+      <mat-header-cell *matHeaderCellDef>Заказчик</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.Customer}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="site">
+      <mat-header-cell *matHeaderCellDef>Товарная площадка(Биржа)</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.Site}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></mat-row>
+  </mat-table>
+
+  <mat-paginator [length]="dataSource?.countPages | async" [pageSize]="10"
+                 [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
+
+</div>

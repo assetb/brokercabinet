@@ -1,0 +1,117 @@
+<div class="column" *ngIf="auction | async; let auction; else loading">
+  <h1>Детальная информация аукциона (#{{auction.Id}})</h1>
+
+  <mat-form-field>
+    <mat-select placeholder="Секция" [(value)]="auction.SectionId">
+      <mat-option *ngFor="let section of sections | async" [value]="section.Id">{{section.Name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Товарная площадка(Биржа)" [(value)]="auction.SiteId">
+      <mat-option *ngFor="let site of sites | async" [value]="site.Id">{{site.Name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Тип" [(value)]="auction.TypeId">
+      <mat-option *ngFor="let type of types | async" [value]="type.Id">{{type.Name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Номер аукциона" [(value)]="auction.Number">
+  </mat-form-field>
+
+  <!--<mat-form-field>-->
+  <!--<input matInput [matDatepicker]="pickerDate0" placeholder="Дата торга"-->
+  <!--[value]="auction.Date" (dateChange)="onDateChange()">-->
+  <!--<mat-datepicker-toggle matSuffix [for]="pickerDate0"></mat-datepicker-toggle>-->
+  <!--<mat-datepicker #pickerDate0></mat-datepicker>-->
+  <!--</mat-form-field>-->
+
+  <mat-form-field>
+    <mat-select placeholder="Статус" [(value)]="auction.StatusId">
+      <mat-option *ngFor="let status of statuses | async" [value]="status.Id"> {{status.Name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Трейдер" [(value)]="auction.TraderId">
+      <mat-option *ngFor="let trader of traders | async" [value]="trader.Id">{{trader.Name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Заказчик" [(value)]="auction.CustomerId">
+      <mat-option *ngFor="let customer of customers | async" [value]="customer.Id">{{customer.Name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="column">
+  <h2>Регламент</h2>
+  <div class="row">
+    <mat-form-field>
+      <input matInput [matDatepicker]="pickerDate1" placeholder="Дата подачи заявки"
+             [value]="(regulation | async)?.OpenDate" disabled>
+      <mat-datepicker-toggle matSuffix [for]="pickerDate1"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate1></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [min]="(regulation | async)?.OpenDate" [matDatepicker]="pickerDate2"
+             placeholder="Начало приема заявок на участие" [value]="(regulation | async)?.ApplyDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerDate2"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate2></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [min]="(regulation | async)?.ApplyDate" [matDatepicker]="pickerDate3"
+             placeholder="Завершение приема заявок на участие" [value]="(regulation | async)?.ApplyDeadLine">
+      <mat-datepicker-toggle matSuffix [for]="pickerDate3"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate3></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [min]="(regulation | async)?.ApplyDeadLine" [matDatepicker]="pickerDate4"
+             placeholder="Дата подачи списка участников" [value]="(regulation | async)?.ApplicantsDeadLine">
+      <mat-datepicker-toggle matSuffix [for]="pickerDate4"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate4></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [min]="(regulation | async)?.ApplicantsDeadLine" [matDatepicker]="pickerDate5"
+             placeholder="Дата внесение ГО" [value]="(regulation | async)?.ProvisionDeadLine">
+      <mat-datepicker-toggle matSuffix [for]="pickerDate5"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate5></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [min]="(regulation | async)?.ProvisionDeadLine" [matDatepicker]="pickerDate6"
+             placeholder="Начало торгов" [value]="(regulation | async)?.CloseDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerDate6"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate6></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="column">
+  <h2>Лоты</h2>
+  <app-lot-list [auctionId]="auctionId"></app-lot-list>
+</div>
+
+<div class="column">
+  <h2>Заявки на участие</h2>
+  <app-supplier-order-list [auctionId]="auctionId"></app-supplier-order-list>
+</div>
+
+<div class="column">
+  <h2>Список допущенных поставщиков</h2>
+  <app-applicant-list [auctionId]="auctionId"></app-applicant-list>
+</div>
+
+<div class="column">
+  <h2>Поручение поставщиков</h2>
+  <app-procuratory-list [auctionId]="auctionId"></app-procuratory-list>
+</div>
+
+<ng-template #loading>Loading User Data...</ng-template>
+
+<!--<mat-form-field>-->
+<!--<input matInput placeholder="Номер аукциона" [(value)]="auction.Number">-->
+<!--</mat-form-field>-->
